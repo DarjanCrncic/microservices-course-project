@@ -33,7 +33,9 @@ public class CurrencyConversionController {
 	@GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
 	public CurrencyConversion calculateConversion(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
 		
-		CurrencyConversion currencyConversion = currencyExchangeProxy.retrieveExchangeValue(from, to);
+		Long fromId = currencyExchangeProxy.retrieveCurrencyValue(from);
+		Long toId = currencyExchangeProxy.retrieveCurrencyValue(to);
+		CurrencyConversion currencyConversion = currencyExchangeProxy.retrieveExchangeValue(fromId, toId);
 		
 		return new CurrencyConversion(currencyConversion.getId(), from, to, quantity, currencyConversion.getConversionMultiple(), 
 				quantity.multiply(currencyConversion.getConversionMultiple()), currencyConversion.getEnvironment());
